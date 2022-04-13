@@ -1,22 +1,53 @@
-function arrSimpleNumber(){
-  let arrSim = [2];  // Изначальное значение в массиве
-  let num = 3;       // Значение, с которого мы начинаем обход
+require('colors');
+const Colors = {GREEN: 0, YELLOW: 1, RED: 2};
 
-  for(num; num <= 100; num++){
-    if(simpleCheck(num, arrSim)){ // функция в if вернет либо true либо false
-      arrSim.push(num);
-    }
+let currentColor = Colors.GREEN;
+const firstArg = +process.argv[2];
+const secondArg = +process.argv[3];
+let notASimplу = true;
+
+if (isNaN(firstArg) || isNaN(secondArg)) {
+  console.log('Error'.red);
+  return;
+}
+
+const simpleNumber = (num) => {
+  if (num <= 1) return false;
+
+  for (let i = 2; i < num; i++) {
+    if (num % i === 0) return false;
+    return true;
   }
-  return arrSim;
 }
 
-function simpleCheck(n, arr) {
-  let mark = true;
-
-  arr.forEach(elm => {
-    if(!(n % elm)) mark = false;
-  })
-  return mark;
+const changeColor = () => {
+  currentColor++;
+  if (currentColor > Colors.RED)
+    currentColor = Colors.GREEN;
 }
 
-console.log(arrSimpleNumber());
+
+const colorPrint = (num) => {
+  if (notASimplу) notASimplу = false;
+  switch (currentColor) {
+    case Colors.RED:
+      console.log(`${num}`.red);
+      break;
+    case Colors.GREEN:
+      console.log(`${num}`.green);
+      break;
+    case Colors.YELLOW:
+      console.log(`${num}`.yellow);
+      break;
+  }
+  changeColor();
+}
+
+
+for (let i = firstArg; i <= secondArg; i++) {
+  if (simpleNumber(i)) colorPrint(i);
+}
+if (notASimplу)
+  console.log('Not a simple number' + firstArg + secondArg.red);
+
+console.log(process.argv[2].red)
